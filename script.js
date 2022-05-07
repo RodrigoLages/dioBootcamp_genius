@@ -1,7 +1,8 @@
-var order = [];
-var clickedOrder = [];
-var score = 0;
+var order, clickedOrder, score;
+var highest = 0;
 
+const currentScore = document.getElementById("current");
+const highestScore = document.getElementById("highest");
 const blue = document.querySelector(".blue");
 const yellow = document.querySelector(".yellow");
 const red = document.querySelector(".red");
@@ -34,12 +35,12 @@ function addSequence() {
   }
 }
 
-//Game over
-function gameOver() {
-  alert(`GAME OVER\nScore: ${score}\nClick OK to restart game`);
+//Start game
+function startGame() {
   order = [];
   clickedOrder = [];
   score = 0;
+  currentScore.innerHTML = "Current Score: " + score;
   addSequence();
 }
 
@@ -47,13 +48,19 @@ function gameOver() {
 function checkOrder() {
   for (let i in clickedOrder) {
     if (clickedOrder[i] != order[i]) {
-      gameOver();
+      alert(`GAME OVER\nScore: ${score}\nClick OK to restart game`);
+      if (score > highest) {
+        highest = score;
+        highestScore.innerHTML = "Highest: " + highest;
+      }
+      startGame();
       return;
     }
   }
 
   if (clickedOrder.length == order.length) {
     score += 100;
+    currentScore.innerHTML = "Current Score: " + score;
     addSequence();
   }
 }
@@ -69,11 +76,10 @@ function eachClick(color) {
   }, 250);
 }
 
-//alert("Welcome!\nClick OK to start the game");
-
 blue.onclick = () => eachClick(0);
 yellow.onclick = () => eachClick(1);
 red.onclick = () => eachClick(2);
 green.onclick = () => eachClick(3);
 
-//addSequence();
+alert("Welcome!\nClick OK to start the game");
+startGame();
